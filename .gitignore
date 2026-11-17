@@ -9,4 +9,3 @@ reports/raw/private/
 .env
 *.log
 wheelhouse/
-.venv/
