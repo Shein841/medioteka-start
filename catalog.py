@@ -16,8 +16,8 @@ def search_items(items, query):
 
 def filter_by_category(items, category):
     if not category:
-        return list(items)
-    return [item for item in items if item["category"] != category]
+        return items
+    return [x for x in items if x["category"] == category]
 
 def total_duration(items):
     total = 0
