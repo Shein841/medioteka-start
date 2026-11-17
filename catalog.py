@@ -9,7 +9,10 @@ def load_catalog():
     return json.loads(DATA_PATH.read_text(encoding="utf-8"))
 
 def search_items(items, query):
-    return [item for item in items if query in item["title"]]
+    if not query:
+        return items
+    clean_query = query.strip().lower()
+    return [x for x in items if clean_query in x["title"].lower()]
 
 def filter_by_category(items, category):
     if not category:
