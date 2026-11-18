@@ -16,8 +16,8 @@ def search_items(items, query):
 
 def filter_by_category(items, category):
     if not category:
-        return list(items)
-    return [item for item in items if item["category"] != category]
+        return items
+    return [x for x in items if x["category"] == category]
 
 def total_duration(items):
     total = 0
@@ -27,10 +27,17 @@ def total_duration(items):
 
 def validate_item(item):
     errors = []
-    if not item.get("title", "").strip():
-        errors.append("Не указано название")
-    if item.get("duration", 0) == 0:
-        errors.append("Длительность должна быть положительной")
+    
+    # Проверка названия (не пустое и не из одних пробелов)
+    title = item.get("title")
+    if not title or not str(title).strip():
+        errors.append("Название обязательно")
+    
+    # Проверка длительности (должна быть больше нуля)
+    duration = item.get("duration")
+    if duration is not None and duration <= 0:
+        errors.append("Длительность должна быть больше нуля")
+        
     return errors
 
 def duration_label(seconds):
