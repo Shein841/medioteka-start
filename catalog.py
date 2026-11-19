@@ -42,19 +42,15 @@ def validate_item(item):
 
 def duration_label(seconds):
     if seconds < 60:
-        result = str(seconds) + " с"
-    else:
-        if seconds < 3600:
-            if seconds % 60 == 0:
-                result = str(seconds // 60) + " мин"
-            else:
-                result = str(seconds // 60) + " мин " + str(seconds % 60) + " с"
-        else:
-            if seconds % 3600 == 0:
-                result = str(seconds // 3600) + " ч"
-            else:
-                if seconds % 60 == 0:
-                    result = str(seconds // 3600) + " ч " + str((seconds % 3600) // 60) + " мин"
-                else:
-                    result = str(seconds // 3600) + " ч " + str((seconds % 3600) // 60) + " мин " + str(seconds % 60) + " с"
-    return result
+        return f"{seconds} с"
+    minutes = seconds // 60
+    if minutes < 60:
+        return f"{minutes} мин {seconds % 60} с" if seconds % 60 else f"{minutes} мин"
+    hours = minutes // 60
+    minutes = minutes % 60
+    parts = [f"{hours} ч"]
+    if minutes or seconds % 60:
+        parts.append(f"{minutes} мин" if minutes else "0 мин")
+    if seconds % 60:
+        parts.append(f"{seconds % 60} с")
+    return " ".join(parts)

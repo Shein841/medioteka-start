@@ -52,3 +52,12 @@ def test_blank_title_is_invalid():
     (61,"1 мин 1 с"), (3600,"1 ч"), (3660,"1 ч 1 мин"), (3661,"1 ч 1 мин 1 с")])
 def test_duration_label(seconds, label):
     assert duration_label(seconds) == label
+
+def test_duration_label_3599():
+    # 3599 секунд = 59 мин 59 с
+    assert duration_label(3599) == "59 мин 59 с"
+
+
+def test_duration_label_3601():
+    # 3601 секунда = 1 ч 0 мин 1 с
+    assert duration_label(3601) == "1 ч 0 мин 1 с"
