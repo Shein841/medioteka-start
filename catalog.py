@@ -1,6 +1,5 @@
 """Операции с каталогом. Поведение задаёт docs/specification.md."""
 import json
-import os
 from pathlib import Path
 
 DATA_PATH = Path(__file__).parent / "data" / "catalog.json"

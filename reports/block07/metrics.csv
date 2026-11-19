@@ -1,5 +1,4 @@
 metric,tool,before_value,after_value,notes
-SLOC,radon raw,,,
-Complexity (cc),radon cc,,,
-Lint errors,ruff,,,
-
+SLOC,radon raw,43,43,"После удаления неиспользуемого импорта SLOC не изменился"
+Complexity (cc),radon cc,A, B (8),"Функция duration_label имеет сложность B, остальные A"
+Lint errors,ruff,1,0,"Исправлена ошибка F401 (unused import)"
