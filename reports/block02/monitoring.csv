@@ -1,1 +1,4 @@
-date,commit,metric,value,unit,method,evidence,interpretation
+point,date,sla,sla_unit,issues_open,issues_regressed,review_hours
+before_fix,2026-11-17,4,шт,3,0,0
+after_fix_1,2026-11-17,1,шт,1,0,0
+after_fix_2,2026-11-17,0,шт,0,0,0

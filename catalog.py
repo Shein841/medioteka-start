@@ -9,12 +9,15 @@ def load_catalog():
     return json.loads(DATA_PATH.read_text(encoding="utf-8"))
 
 def search_items(items, query):
-    return [item for item in items if query in item["title"]]
+    if not query:
+        return items
+    clean_query = query.strip().lower()
+    return [x for x in items if clean_query in x["title"].lower()]
 
 def filter_by_category(items, category):
     if not category:
-        return list(items)
-    return [item for item in items if item["category"] != category]
+        return items
+    return [x for x in items if x["category"] == category]
 
 def total_duration(items):
     total = 0
@@ -24,27 +27,30 @@ def total_duration(items):
 
 def validate_item(item):
     errors = []
-    if not item.get("title", "").strip():
-        errors.append("Не указано название")
-    if item.get("duration", 0) == 0:
-        errors.append("Длительность должна быть положительной")
+    
+    # Проверка названия (не пустое и не из одних пробелов)
+    title = item.get("title")
+    if not title or not str(title).strip():
+        errors.append("Название обязательно")
+    
+    # Проверка длительности (должна быть больше нуля)
+    duration = item.get("duration")
+    if duration is not None and duration <= 0:
+        errors.append("Длительность должна быть больше нуля")
+        
     return errors
 
 def duration_label(seconds):
     if seconds < 60:
-        result = str(seconds) + " с"
-    else:
-        if seconds < 3600:
-            if seconds % 60 == 0:
-                result = str(seconds // 60) + " мин"
-            else:
-                result = str(seconds // 60) + " мин " + str(seconds % 60) + " с"
-        else:
-            if seconds % 3600 == 0:
-                result = str(seconds // 3600) + " ч"
-            else:
-                if seconds % 60 == 0:
-                    result = str(seconds // 3600) + " ч " + str((seconds % 3600) // 60) + " мин"
-                else:
-                    result = str(seconds // 3600) + " ч " + str((seconds % 3600) // 60) + " мин " + str(seconds % 60) + " с"
-    return result
+        return f"{seconds} с"
+    minutes = seconds // 60
+    if minutes < 60:
+        return f"{minutes} мин {seconds % 60} с" if seconds % 60 else f"{minutes} мин"
+    hours = minutes // 60
+    minutes = minutes % 60
+    parts = [f"{hours} ч"]
+    if minutes or seconds % 60:
+        parts.append(f"{minutes} мин" if minutes else "0 мин")
+    if seconds % 60:
+        parts.append(f"{seconds % 60} с")
+    return " ".join(parts)
